@@ -2,8 +2,8 @@
 # Licensed under the MIT License.
 
 import torch
-import models.networks as networks
-import util.util as util
+from . import networks
+from ..util import util
 
 
 class Pix2PixModel(torch.nn.Module):
@@ -243,4 +243,4 @@ class Pix2PixModel(torch.nn.Module):
         return eps.mul(std) + mu
 
     def use_gpu(self):
-        return len(self.opt.gpu_ids) > 0
+        return torch.cuda.is_available() and len(self.opt.gpu_ids) > 0

@@ -1,45 +1,34 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
+# Copyright (c) Microsoft Corporation
 
-import os
-from collections import OrderedDict
-
-import data
-from options.test_options import TestOptions
-from models.pix2pix_model import Pix2PixModel
-from util.visualizer import Visualizer
-import torchvision.utils as vutils
+import torchvision.transforms as T
 import warnings
+
+from .options.test_options import TestOptions
+from .models.pix2pix_model import Pix2PixModel
+from .data import create_dataloader
+
 warnings.filterwarnings("ignore", category=UserWarning)
-
-opt = TestOptions().parse()
-
-dataloader = data.create_dataloader(opt)
-
-model = Pix2PixModel(opt)
-model.eval()
-
-visualizer = Visualizer(opt)
+tensor2image = T.ToPILImage()
 
 
-single_save_url = os.path.join(opt.checkpoints_dir, opt.name, opt.results_dir, "each_img")
+def test_face(face_images: list, args: dict) -> list:
+    opt = TestOptions().parse()
+    for K, V in args.items():
+        setattr(opt, K, V)
 
+    dataloader = create_dataloader(opt, face_images)
+    images = []
 
-if not os.path.exists(single_save_url):
-    os.makedirs(single_save_url)
+    model = Pix2PixModel(opt)
+    model.eval()
 
+    for i, data_i in enumerate(dataloader):
+        if i * opt.batchSize >= opt.how_many:
+            break
 
-for i, data_i in enumerate(dataloader):
-    if i * opt.batchSize >= opt.how_many:
-        break
+        generated = model(data_i, mode="inference")
 
-    generated = model(data_i, mode="inference")
+        for b in range(generated.shape[0]):
+            images.append(tensor2image((generated[b] + 1) / 2))
 
-    img_path = data_i["path"]
-
-    for b in range(generated.shape[0]):
-        img_name = os.path.split(img_path[b])[-1]
-        save_img_url = os.path.join(single_save_url, img_name)
-
-        vutils.save_image((generated[b] + 1) / 2, save_img_url)
-
+    return images
