@@ -1,9 +1,8 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
+# Copyright (c) Microsoft Corporation
 
 from .base_dataset import BaseDataset, get_params, get_transform
-from PIL import Image
 from ..util import util
+from PIL import Image
 import os
 
 
@@ -46,11 +45,7 @@ class Pix2pixDataset(BaseDataset):
         self.dataset_size = size
 
     def get_paths(self, opt):
-        label_paths = []
-        image_paths = []
-        instance_paths = []
-        assert False, "A subclass of Pix2pixDataset must override self.get_paths(self, opt)"
-        return label_paths, image_paths, instance_paths
+        raise SystemError("Subclass must override get_paths()")
 
     def paths_match(self, path1, path2):
         filename1_without_ext = os.path.splitext(os.path.basename(path1))[0]
@@ -62,9 +57,13 @@ class Pix2pixDataset(BaseDataset):
         label_path = self.label_paths[index]
         label = Image.open(label_path)
         params = get_params(self.opt, label.size)
-        transform_label = get_transform(self.opt, params, method=Image.NEAREST, normalize=False)
+        transform_label = get_transform(
+            self.opt, params, method=Image.NEAREST, normalize=False
+        )
         label_tensor = transform_label(label) * 255.0
-        label_tensor[label_tensor == 255] = self.opt.label_nc  # 'unknown' is opt.label_nc
+        label_tensor[label_tensor == 255] = (
+            self.opt.label_nc
+        )  # 'unknown' is opt.label_nc
 
         # input image (real images)
         image_path = self.image_paths[index]
@@ -77,8 +76,8 @@ class Pix2pixDataset(BaseDataset):
         transform_image = get_transform(self.opt, params)
         image_tensor = transform_image(image)
 
-        # if using instance maps
         if self.opt.no_instance:
+            # using instance maps
             instance_tensor = 0
         else:
             instance_path = self.instance_paths[index]

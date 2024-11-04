@@ -14,10 +14,9 @@ tensor2image = transforms.ToPILImage()
 
 
 def data_transforms(img, method=Image.BILINEAR, scale=False):
-
     ow, oh = img.size
     pw, ph = ow, oh
-    if scale == True:
+    if scale is True:
         if ow < oh:
             ow = 256
             oh = ph / pw * 256
@@ -43,14 +42,12 @@ def data_transforms_rgb_old(img):
 
 
 def irregular_hole_synthesize(img, mask):
-
     img_np = np.array(img).astype("uint8")
     mask_np = np.array(mask).astype("uint8")
     mask_np = mask_np / 255
     img_new = img_np * (1 - mask_np) + mask_np * 255
 
     hole_img = Image.fromarray(img_new.astype("uint8")).convert("RGB")
-
     return hole_img
 
 

@@ -39,7 +39,6 @@ def calculate_lookup(src_cdf, ref_cdf):
     lookup_table = np.zeros(256)
     lookup_val = 0
     for src_pixel_val in range(len(src_cdf)):
-        lookup_val
         for ref_pixel_val in range(len(ref_cdf)):
             if ref_cdf[ref_pixel_val] >= src_cdf[src_pixel_val]:
                 lookup_val = ref_pixel_val
@@ -65,12 +64,12 @@ def match_histograms(src_image, ref_image):
     # Compute the b, g, and r histograms separately
     # The flatten() Numpy method returns a copy of the array c
     # collapsed into one dimension.
-    src_hist_blue, bin_0 = np.histogram(src_b.flatten(), 256, [0, 256])
-    src_hist_green, bin_1 = np.histogram(src_g.flatten(), 256, [0, 256])
-    src_hist_red, bin_2 = np.histogram(src_r.flatten(), 256, [0, 256])
-    ref_hist_blue, bin_3 = np.histogram(ref_b.flatten(), 256, [0, 256])
-    ref_hist_green, bin_4 = np.histogram(ref_g.flatten(), 256, [0, 256])
-    ref_hist_red, bin_5 = np.histogram(ref_r.flatten(), 256, [0, 256])
+    src_hist_blue, _ = np.histogram(src_b.flatten(), 256, [0, 256])
+    src_hist_green, _ = np.histogram(src_g.flatten(), 256, [0, 256])
+    src_hist_red, _ = np.histogram(src_r.flatten(), 256, [0, 256])
+    ref_hist_blue, _ = np.histogram(ref_b.flatten(), 256, [0, 256])
+    ref_hist_green, _ = np.histogram(ref_g.flatten(), 256, [0, 256])
+    ref_hist_red, _ = np.histogram(ref_r.flatten(), 256, [0, 256])
 
     # Compute the normalized cdf for the source and reference image
     src_cdf_blue = calculate_cdf(src_hist_blue)
@@ -113,33 +112,17 @@ def _standard_face_pts():
     return np.reshape(pts, (5, 2))
 
 
-def _origin_face_pts():
-    pts = np.array(
-        [196.0, 226.0, 316.0, 226.0, 256.0, 286.0, 220.0, 360.4, 292.0, 360.4],
-        np.float32,
-    )
-
-    return np.reshape(pts, (5, 2))
-
-
 def compute_transformation_matrix(img, landmark, normalize, target_face_scale=1.0):
-
     std_pts = _standard_face_pts()  # [-1,1]
     target_pts = (std_pts * target_face_scale + 1) / 2 * 512.0
 
-    # print(target_pts)
-
-    h, w, c = img.shape
-    if normalize == True:
+    h, w, _ = img.shape
+    if normalize is True:
         landmark[:, 0] = landmark[:, 0] / h * 2 - 1.0
         landmark[:, 1] = landmark[:, 1] / w * 2 - 1.0
 
-    # print(landmark)
-
     affine = SimilarityTransform()
-
     affine.estimate(target_pts, landmark)
-
     return affine
 
 
@@ -150,19 +133,13 @@ def compute_inverse_transformation_matrix(
     std_pts = _standard_face_pts()  # [-1,1]
     target_pts = (std_pts * target_face_scale + 1) / 2 * 512.0
 
-    # print(target_pts)
-
-    h, w, c = img.shape
-    if normalize == True:
+    h, w, _ = img.shape
+    if normalize is True:
         landmark[:, 0] = landmark[:, 0] / h * 2 - 1.0
         landmark[:, 1] = landmark[:, 1] / w * 2 - 1.0
 
-    # print(landmark)
-
     affine = SimilarityTransform()
-
     affine.estimate(landmark, target_pts)
-
     return affine
 
 
@@ -188,7 +165,6 @@ def show_detection(image, box, landmark):
 
 
 def affine2theta(affine, input_w, input_h, target_w, target_h):
-    # param = np.linalg.inv(affine)
     param = affine
     theta = np.zeros([2, 3])
     theta[0, 0] = param[0, 0] * input_h / target_h
@@ -205,7 +181,6 @@ def affine2theta(affine, input_w, input_h, target_w, target_h):
 
 
 def blur_blending(im1, im2, mask):
-
     mask = mask * 255.0
 
     kernel = np.ones((10, 10), np.uint8)
@@ -217,14 +192,11 @@ def blur_blending(im1, im2, mask):
 
     mask_blur = mask.filter(ImageFilter.GaussianBlur(20))
     im = Image.composite(im1, im2, mask)
-
     im = Image.composite(im, im2, mask_blur)
-
     return np.array(im) / 255.0
 
 
 def blur_blending_cv2(im1, im2, mask):
-
     mask = mask * 255.0
 
     kernel = np.ones((9, 9), np.uint8)
@@ -237,13 +209,10 @@ def blur_blending_cv2(im1, im2, mask):
 
     im /= 255.0
     im = np.clip(im, 0.0, 1.0)
-
     return im
 
 
 def Poisson_blending(im1, im2, mask):
-
-    # mask = 1 - mask
     mask = mask * 255.0
     kernel = np.ones((10, 10), np.uint8)
     mask = cv2.erode(mask, kernel, iterations=1)
@@ -252,7 +221,7 @@ def Poisson_blending(im1, im2, mask):
     mask *= 255
 
     mask = mask[:, :, 0]
-    width, height, channels = im1.shape
+    width, height, _ = im1.shape
     center = (int(height / 2), int(width / 2))
     result = cv2.seamlessClone(
         im2.astype("uint8"),
@@ -266,7 +235,6 @@ def Poisson_blending(im1, im2, mask):
 
 
 def Poisson_B(im1, im2, mask, center):
-
     mask = mask * 255.0
 
     result = cv2.seamlessClone(
@@ -281,7 +249,6 @@ def Poisson_B(im1, im2, mask, center):
 
 
 def seamless_clone(old_face, new_face, raw_mask):
-
     height, width, _ = old_face.shape
     height = height // 2
     width = width // 2
@@ -298,11 +265,11 @@ def seamless_clone(old_face, new_face, raw_mask):
     prior = np.rint(
         np.pad(old_face * 255.0, ((height, height), (width, width), (0, 0)), "constant")
     ).astype("uint8")
-    # if np.sum(insertion_mask) == 0:
+
     n_mask = insertion_mask[1:-1, 1:-1, :]
     n_mask = cv2.copyMakeBorder(n_mask, 1, 1, 1, 1, cv2.BORDER_CONSTANT, 0)
     print(n_mask.shape)
-    x, y, w, h = cv2.boundingRect(n_mask[:, :, 0])
+    _, _, w, h = cv2.boundingRect(n_mask[:, :, 0])
     if w < 4 or h < 4:
         blended = prior
     else:
@@ -315,7 +282,6 @@ def seamless_clone(old_face, new_face, raw_mask):
         )  # pylint: disable=no-member
 
     blended = blended[height:-height, width:-width]
-
     return blended.astype("float32") / 255.0
 
 
@@ -323,12 +289,10 @@ def get_landmark(face_landmarks, id):
     part = face_landmarks.part(id)
     x = part.x
     y = part.y
-
     return (x, y)
 
 
 def search(face_landmarks):
-
     x1, y1 = get_landmark(face_landmarks, 36)
     x2, y2 = get_landmark(face_landmarks, 39)
     x3, y3 = get_landmark(face_landmarks, 42)

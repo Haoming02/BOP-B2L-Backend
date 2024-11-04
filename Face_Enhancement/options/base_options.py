@@ -15,14 +15,13 @@ class BaseOptions:
         self.initialized = False
 
     def initialize(self, parser):
-        # experiment specifics
+
         parser.add_argument(
             "--name",
             type=str,
             default="label2coco",
             help="name of the experiment. It decides where to store samples and models",
         )
-
         parser.add_argument(
             "--gpu_ids",
             type=str,
@@ -208,8 +207,6 @@ class BaseOptions:
             action="store_true",
             help="use tensorboard to record the resutls",
         )
-
-        # parser.add_argument('--img_dir',)
         parser.add_argument(
             "--old_face_folder",
             type=str,
@@ -222,8 +219,12 @@ class BaseOptions:
             default="",
             help="The folder name of input old face label",
         )
-
-        parser.add_argument("--injection_layer", type=str, default="all", help="")
+        parser.add_argument(
+            "--injection_layer",
+            type=str,
+            default="all",
+            help="",
+        )
 
         self.initialized = True
         return parser
@@ -237,7 +238,7 @@ class BaseOptions:
             parser = self.initialize(parser)
 
         # get the basic options
-        opt, unknown = parser.parse_known_args()
+        opt, _ = parser.parse_known_args()
 
         # modify model-related parser options
         model_name = opt.model
@@ -249,14 +250,14 @@ class BaseOptions:
         # dataset_option_setter = data.get_option_setter(dataset_mode)
         # parser = dataset_option_setter(parser, self.isTrain)
 
-        opt, unknown = parser.parse_known_args()
+        opt, _ = parser.parse_known_args()
 
         # if there is opt_file, load it.
         # The previous default options will be overwritten
         if opt.load_from_opt_file:
             parser = self.update_options_from_file(parser, opt)
 
-        opt, unknown = parser.parse_known_args()
+        opt, _ = parser.parse_known_args()
         self.parser = parser
         return opt
 
@@ -332,16 +333,12 @@ class BaseOptions:
 
         # set gpu ids
         if torch.cuda.is_available() and len(opt.gpu_ids) > 0:
-            if torch.cuda.device_count() > opt.gpu_ids[0]:
-                try:
-                    torch.cuda.set_device(opt.gpu_ids[0])
-                except:
-                    print("Failed to set GPU device. Using CPU...")
-
-            else:
-                print("Invalid GPU ID. Using CPU...")
-
-        # assert (len(opt.gpu_ids) == 0 or opt.batchSize % len(opt.gpu_ids) == 0), "Batch size %d is wrong. It must be a multiple of # GPUs %d." % (opt.batchSize, len(opt.gpu_ids))
+            try:
+                torch.cuda.set_device(opt.gpu_ids[0])
+            except Exception:
+                print("Failed to set GPU device. Using CPU...")
+        else:
+            print("Using CPU...")
 
         self.opt = opt
         return self.opt

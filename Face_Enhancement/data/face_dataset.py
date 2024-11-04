@@ -12,8 +12,6 @@ class FaceTestDataset(BaseDataset):
             action="store_true",
             help="If specified, skip sanity check of correct label-image file pairing",
         )
-        #    parser.set_defaults(contain_dontcare_label=False)
-        #    parser.set_defaults(no_instance=True)
         return parser
 
     def initialize(self, opt, faces: list):

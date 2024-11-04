@@ -1,11 +1,10 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
+# Copyright (c) Microsoft Corporation
 
-import torch
 from .base_network import BaseNetwork
-from .generator import *
-from .encoder import *
+# from .generator import *
+# from .encoder import *
 from ...util import util
+import torch
 
 
 def find_network_using_name(target_network_name, filename):
@@ -13,7 +12,9 @@ def find_network_using_name(target_network_name, filename):
     module_name = "models.networks." + filename
     network = util.find_class_in_module(target_class_name, module_name)
 
-    assert issubclass(network, BaseNetwork), "Class %s should be a subclass of BaseNetwork" % network
+    assert issubclass(
+        network, BaseNetwork
+    ), f"Class {network} should be a subclass of BaseNetwork"
 
     return network
 

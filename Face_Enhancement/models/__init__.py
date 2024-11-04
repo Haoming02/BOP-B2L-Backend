@@ -1,7 +1,5 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
+# Copyright (c) Microsoft Corporation
 
-import importlib
 import torch
 
 
@@ -9,7 +7,7 @@ def find_model_using_name(model_name):
     # Given the option --model [modelname],
     # the file "models/modelname_model.py"
     # will be imported.
-    assert model_name == 'pix2pix'
+    assert model_name == "pix2pix"
     model_filename = f"{model_name}_model"
 
     from . import pix2pix_model as modellib
@@ -20,7 +18,9 @@ def find_model_using_name(model_name):
     model = None
     target_model_name = model_name.replace("_", "") + "model"
     for name, cls in modellib.__dict__.items():
-        if name.lower() == target_model_name.lower() and issubclass(cls, torch.nn.Module):
+        if name.lower() == target_model_name.lower() and issubclass(
+            cls, torch.nn.Module
+        ):
             model = cls
 
     if model is None:

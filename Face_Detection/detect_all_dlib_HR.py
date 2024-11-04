@@ -28,19 +28,16 @@ def get_landmark(face_landmarks, id):
     part = face_landmarks.part(id)
     x = part.x
     y = part.y
-
     return (x, y)
 
 
 def search(face_landmarks):
-
     x1, y1 = get_landmark(face_landmarks, 36)
     x2, y2 = get_landmark(face_landmarks, 39)
     x3, y3 = get_landmark(face_landmarks, 42)
     x4, y4 = get_landmark(face_landmarks, 45)
 
     x_nose, y_nose = get_landmark(face_landmarks, 30)
-
     x_left_mouth, y_left_mouth = get_landmark(face_landmarks, 48)
     x_right_mouth, y_right_mouth = get_landmark(face_landmarks, 54)
 
@@ -63,23 +60,16 @@ def search(face_landmarks):
 
 
 def compute_transformation_matrix(img, landmark, normalize, target_face_scale=1.0):
-
     std_pts = _standard_face_pts()  # [-1,1]
     target_pts = (std_pts * target_face_scale + 1) / 2 * 512.0
 
-    # print(target_pts)
-
-    h, w, c = img.shape
-    if normalize == True:
+    h, w, _ = img.shape
+    if normalize is True:
         landmark[:, 0] = landmark[:, 0] / h * 2 - 1.0
         landmark[:, 1] = landmark[:, 1] / w * 2 - 1.0
 
-    # print(landmark)
-
     affine = SimilarityTransform()
-
     affine.estimate(target_pts, landmark)
-
     return affine.params
 
 
@@ -105,7 +95,6 @@ def show_detection(image, box, landmark):
 
 
 def affine2theta(affine, input_w, input_h, target_w, target_h):
-    # param = np.linalg.inv(affine)
     param = affine
     theta = np.zeros([2, 3])
     theta[0, 0] = param[0, 0] * input_h / target_h
@@ -138,7 +127,6 @@ def detect_hr(input_image: Image) -> list:
         return detected_faces
 
     for face_id in range(len(faces)):
-
         current_face = faces[face_id]
         face_landmarks = landmark_locator(image, current_face)
         current_fl = search(face_landmarks)

@@ -1,10 +1,13 @@
 # Copyright (c) Microsoft Corporation
 
-from .NonLocal_feature_mapping_model import *
+from .NonLocal_feature_mapping_model import (
+    Mapping_Model_with_mask,
+    Mapping_Model_with_mask_2,
+)
+
 from ..util.image_pool import ImagePool
 from .base_model import BaseModel
 from . import networks
-
 from torch.autograd import Variable
 import torch.nn as nn
 import torch
@@ -21,8 +24,6 @@ class Mapping_Model(nn.Module):
         model = []
         tmp_nc = 64
         n_up = 4
-
-        # print("Mapping: You are using the mapping model without global restoration.")
 
         for i in range(n_up):
             ic = min(tmp_nc * (2**i), mc)
@@ -327,11 +328,7 @@ class Pix2PixHDModel_Mapping(BaseModel):
 
         # Fake Generation
         input_concat = input_label
-
         label_feat = self.netG_A.forward(input_concat, flow="enc")
-        # print('label:')
-        # print(label_feat.min(), label_feat.max(), label_feat.mean())
-        # label_feat = label_feat / 16.0
 
         if self.opt.NL_use_mask:
             label_feat_map = self.mapping_net(label_feat.detach(), inst)

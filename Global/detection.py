@@ -13,12 +13,9 @@ import os
 
 from .detection_models import networks
 
-
-tensor2image = transforms.ToPILImage()
-
 warnings.filterwarnings("ignore", category=UserWarning)
-
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+tensor2image = transforms.ToPILImage()
 
 
 def data_transforms(img, full_size, method=Image.BICUBIC):
@@ -63,9 +60,7 @@ def scale_tensor(img_tensor, default_scale=256):
 
 
 def blend_mask(img, mask):
-
     np_img = np.array(img).astype("float")
-
     return Image.fromarray(
         (np_img * (1 - mask) + mask * 255.0).astype("uint8")
     ).convert("RGB")
@@ -93,7 +88,6 @@ def main(config: argparse.Namespace, input_image: Image):
     )
     checkpoint = torch.load(checkpoint_path, map_location="cpu")
     model.load_state_dict(checkpoint["model_state"])
-    print("model weights loaded")
 
     if torch.cuda.is_available() and config.GPU >= 0:
         model.to(config.GPU)

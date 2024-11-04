@@ -1,15 +1,12 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
+# Copyright (c) Microsoft Corporation
 
-import re
-import importlib
-import torch
-from argparse import Namespace
-import numpy as np
 from PIL import Image
-import os
-import argparse
 import dill as pickle
+import numpy as np
+import argparse
+import torch
+import re
+import os
 
 
 def save_obj(obj, name):
@@ -149,12 +146,12 @@ def str2bool(v):
 def find_class_in_module(target_cls_name, module):
     target_cls_name = target_cls_name.replace("_", "").lower()
 
-    if module == 'models.networks.generator':
+    if module == "models.networks.generator":
         from ..models.networks import generator as clslib
-    elif module == 'models.networks.encoder':
+    elif module == "models.networks.encoder":
         from ..models.networks import encoder as clslib
     else:
-        raise NotImplementedError(f'Module: {module}')
+        raise NotImplementedError(f"Module: {module}")
 
     cls = None
     for name, clsobj in clslib.__dict__.items():
@@ -201,7 +198,6 @@ def uint82bin(n, count=8):
 
 class Colorize(object):
     def __init__(self, n=35):
-        self.cmap = labelcolormap(n)
         self.cmap = torch.from_numpy(self.cmap[:n])
 
     def __call__(self, gray_image):

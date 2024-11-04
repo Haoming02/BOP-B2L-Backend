@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation
 
-import torch.nn as nn
 from . import networks
+import torch.nn as nn
 
 
 class Mapping_Model_with_mask(nn.Module):
@@ -61,7 +61,6 @@ class Mapping_Model_with_mask(nn.Module):
                 activation,
                 nn.Conv2d(tmp_nc, opt.feat_dim, 1, 1),
             ]
-        # model += [nn.Conv2d(64, 1, 1, 1, 0)]
         self.after_NL = nn.Sequential(*model)
 
     def forward(self, input, mask):
@@ -105,7 +104,7 @@ class Mapping_Model_with_mask_2(nn.Module):  ## Multi-Scale Patch Attention
                 )
             ]
 
-        print("using multi-scale patch attention, conv combine + mask input...")
+        print("using multi-scale patch attention; conv combine + mask input...")
 
         self.before_NL = nn.Sequential(*model)
 
@@ -147,7 +146,6 @@ class Mapping_Model_with_mask_2(nn.Module):  ## Multi-Scale Patch Attention
 
         if opt.mapping_exp == 1:
             self.NL_scale_3 = networks.Patch_Attention_4(mc, mc, 2)
-        # self.NL_scale_3=networks.Patch_Attention_2(mc,mc,2)
 
         model = []
         for i in range(2):
@@ -173,7 +171,6 @@ class Mapping_Model_with_mask_2(nn.Module):  ## Multi-Scale Patch Attention
                 activation,
                 nn.Conv2d(tmp_nc, opt.feat_dim, 1, 1),
             ]
-        # model += [nn.Conv2d(64, 1, 1, 1, 0)]
         self.after_NL = nn.Sequential(*model)
 
     def forward(self, input, mask):

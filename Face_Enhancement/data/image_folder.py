@@ -1,5 +1,4 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
+# Copyright (c) Microsoft Corporation
 
 import torch.utils.data as data
 from PIL import Image
@@ -28,7 +27,7 @@ def is_image_file(filename):
 def make_dataset_rec(dir, images):
     assert os.path.isdir(dir), "%s is not a valid directory" % dir
 
-    for root, dnames, fnames in sorted(os.walk(dir, followlinks=True)):
+    for root, _, fnames in sorted(os.walk(dir, followlinks=True)):
         for fname in fnames:
             if is_image_file(fname):
                 path = os.path.join(root, fname)
@@ -48,9 +47,11 @@ def make_dataset(dir, recursive=False, read_cache=False, write_cache=False):
     if recursive:
         make_dataset_rec(dir, images)
     else:
-        assert os.path.isdir(dir) or os.path.islink(dir), "%s is not a valid directory" % dir
+        assert os.path.isdir(dir) or os.path.islink(dir), (
+            "%s is not a valid directory" % dir
+        )
 
-        for root, dnames, fnames in sorted(os.walk(dir)):
+        for root, _, fnames in sorted(os.walk(dir)):
             for fname in fnames:
                 if is_image_file(fname):
                     path = os.path.join(root, fname)

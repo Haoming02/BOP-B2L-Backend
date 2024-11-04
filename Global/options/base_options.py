@@ -10,7 +10,7 @@ class BaseOptions:
         self.initialized = False
 
     def initialize(self):
-        # experiment specifics
+
         self.parser.add_argument(
             "--name",
             type=str,
@@ -29,7 +29,6 @@ class BaseOptions:
             default="./checkpoints",
             help="models are saved here",
         )  ## note: to add this param when using philly
-        # self.parser.add_argument('--project_dir', type=str, default='./', help='the project is saved here')  ################### This is necessary for philly
         self.parser.add_argument(
             "--outputs_dir", type=str, default="./outputs", help="models are saved here"
         )  ## note: to add this param when using philly  Please end with '/'
@@ -457,13 +456,11 @@ class BaseOptions:
 
         # set gpu ids
         if torch.cuda.is_available() and len(self.opt.gpu_ids) > 0:
-            if torch.cuda.device_count() > self.opt.gpu_ids[0]:
-                try:
-                    torch.cuda.set_device(self.opt.gpu_ids[0])
-                except:
-                    print("Failed to set GPU device. Using CPU...")
-
-            else:
-                print("Invalid GPU ID. Using CPU...")
+            try:
+                torch.cuda.set_device(self.opt.gpu_ids[0])
+            except Exception:
+                print("Failed to set GPU device. Using CPU...")
+        else:
+            print("Using CPU...")
 
         return self.opt

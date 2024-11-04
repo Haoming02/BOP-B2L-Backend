@@ -1,24 +1,16 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
+# Copyright (c) Microsoft Corporation
 
-import os
-import sys
-import time
-import shutil
-import platform
-import numpy as np
-from datetime import datetime
-
-import torch
-import torchvision as tv
-import torch.backends.cudnn as cudnn
-
-# from torch.utils.tensorboard import SummaryWriter
-
-import yaml
-import matplotlib.pyplot as plt
 from easydict import EasyDict as edict
+import torch.backends.cudnn as cudnn
 import torchvision.utils as vutils
+import matplotlib.pyplot as plt
+import torchvision as tv
+import numpy as np
+import torch
+import time
+import yaml
+import sys
+import os
 
 
 ##### option parsing ######
@@ -36,7 +28,12 @@ def save_options(config_dict):
     mkdir_if_not(file_dir)
     file_name = os.path.join(file_dir, "opt.txt")
     with open(file_name, "wt") as opt_file:
-        opt_file.write(os.path.basename(sys.argv[0]) + " " + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "\n")
+        opt_file.write(
+            os.path.basename(sys.argv[0])
+            + " "
+            + strftime("%Y-%m-%d %H:%M:%S", gmtime())
+            + "\n"
+        )
         opt_file.write("------------ Options -------------\n")
         for k, v in sorted(config_dict.items()):
             opt_file.write("%s: %s\n" % (str(k), str(v)))
@@ -93,7 +90,7 @@ def prepare_device(use_gpu, gpu_ids):
 ###### file system ######
 def get_dir_size(start_path="."):
     total_size = 0
-    for dirpath, dirnames, filenames in os.walk(start_path):
+    for dirpath, _, filenames in os.walk(start_path):
         for f in filenames:
             fp = os.path.join(dirpath, f)
             total_size += os.path.getsize(fp)
@@ -129,33 +126,6 @@ def get_size(start_path="."):
     return total_size
 
 
-def clean_tensorboard(directory):
-    tensorboard_list = os.listdir(directory)
-    SIZE_THRESH = 100000
-    for tensorboard in tensorboard_list:
-        tensorboard = os.path.join(directory, tensorboard)
-        if get_size(tensorboard) < SIZE_THRESH:
-            print("deleting the empty tensorboard: ", tensorboard)
-            #
-            if os.path.isdir(tensorboard):
-                shutil.rmtree(tensorboard)
-            else:
-                os.remove(tensorboard)
-
-
-def prepare_tensorboard(config, experiment_name=datetime.now().strftime("%Y-%m-%d %H-%M-%S")):
-    tensorboard_directory = os.path.join(config.checkpoint_dir, config.name, "tensorboard_logs")
-    mkdir_if_not(tensorboard_directory)
-    clean_tensorboard(tensorboard_directory)
-    tb_writer = SummaryWriter(os.path.join(tensorboard_directory, experiment_name), flush_secs=10)
-
-    # try:
-    #     shutil.copy('outputs/opt.txt', tensorboard_directory)
-    # except:
-    #     print('cannot find file opt.txt')
-    return tb_writer
-
-
 def tb_loss_logger(tb_writer, iter_index, loss_logger):
     for tag, value in loss_logger.items():
         tb_writer.add_scalar(tag, scalar_value=value.item(), global_step=iter_index)
@@ -177,8 +147,9 @@ def tb_image_logger(tb_writer, iter_index, images_info, config):
 
 
 def tb_image_logger_test(epoch, iter, images_info, config):
-
-    url = os.path.join(config.output_dir, config.name, config.train_mode, "val_" + str(epoch))
+    url = os.path.join(
+        config.output_dir, config.name, config.train_mode, "val_" + str(epoch)
+    )
     if not os.path.exists(url):
         os.makedirs(url)
     scratch_img = images_info["test_scratch_image"].data.cpu()
@@ -191,8 +162,12 @@ def tb_image_logger_test(epoch, iter, images_info, config):
     predict_hard_mask = (predict_mask.data.cpu() >= 0.5).float()
 
     imgs = torch.cat((scratch_img, predict_hard_mask, gt_mask), 0)
-    img_grid = vutils.save_image(
-        imgs, os.path.join(url, str(iter) + ".jpg"), nrow=len(scratch_img), padding=0, normalize=True
+    vutils.save_image(
+        imgs,
+        os.path.join(url, str(iter) + ".jpg"),
+        nrow=len(scratch_img),
+        padding=0,
+        normalize=True,
     )
 
 
@@ -216,11 +191,13 @@ def imshow(input_image, title=None, to_numpy=False):
 def vgg_preprocess(tensor):
     # input is RGB tensor which ranges in [0,1]
     # output is BGR tensor which ranges in [0,255]
-    tensor_bgr = torch.cat((tensor[:, 2:3, :, :], tensor[:, 1:2, :, :], tensor[:, 0:1, :, :]), dim=1)
-    # tensor_bgr = tensor[:, [2, 1, 0], ...]
-    tensor_bgr_ml = tensor_bgr - torch.Tensor([0.40760392, 0.45795686, 0.48501961]).type_as(tensor_bgr).view(
-        1, 3, 1, 1
+    tensor_bgr = torch.cat(
+        (tensor[:, 2:3, :, :], tensor[:, 1:2, :, :], tensor[:, 0:1, :, :]), dim=1
     )
+    # tensor_bgr = tensor[:, [2, 1, 0], ...]
+    tensor_bgr_ml = tensor_bgr - torch.Tensor(
+        [0.40760392, 0.45795686, 0.48501961]
+    ).type_as(tensor_bgr).view(1, 3, 1, 1)
     tensor_rst = tensor_bgr_ml * 255
     return tensor_rst
 
@@ -230,8 +207,12 @@ def torch_vgg_preprocess(tensor):
     # note that both input and output are RGB tensors;
     # input and output ranges in [0,1]
     # normalize the tensor with mean and variance
-    tensor_mc = tensor - torch.Tensor([0.485, 0.456, 0.406]).type_as(tensor).view(1, 3, 1, 1)
-    tensor_mc_norm = tensor_mc / torch.Tensor([0.229, 0.224, 0.225]).type_as(tensor_mc).view(1, 3, 1, 1)
+    tensor_mc = tensor - torch.Tensor([0.485, 0.456, 0.406]).type_as(tensor).view(
+        1, 3, 1, 1
+    )
+    tensor_mc_norm = tensor_mc / torch.Tensor([0.229, 0.224, 0.225]).type_as(
+        tensor_mc
+    ).view(1, 3, 1, 1)
     return tensor_mc_norm
 
 

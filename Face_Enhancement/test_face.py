@@ -1,11 +1,10 @@
 # Copyright (c) Microsoft Corporation
 
-import torchvision.transforms as T
-import warnings
-
 from .options.test_options import TestOptions
 from .models.pix2pix_model import Pix2PixModel
 from .data import create_dataloader
+import torchvision.transforms as T
+import warnings
 
 warnings.filterwarnings("ignore", category=UserWarning)
 tensor2image = T.ToPILImage()
