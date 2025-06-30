@@ -1,7 +1,10 @@
-# Old Photo Restoration Backend
+<h1 align="center">Old Photo Restoration Backend</h1>
 
-This Repository is a Backend for the [sd-webui-old-photo-restoration](https://github.com/Haoming02/sd-webui-old-photo-restoration) and [comfyui-old-photo-restoration](https://github.com/Haoming02/comfyui-old-photo-restoration) Extensions
+<p align="center">
+This Repository is the Backend for <a href="https://github.com/Haoming02/sd-webui-old-photo-restoration">sd-webui-old-photo-restoration</a> and <a href="https://github.com/Haoming02/comfyui-old-photo-restoration">comfyui-old-photo-restoration</a>
+</p>
 
+<br>
 <hr>
 
 <p align="center">

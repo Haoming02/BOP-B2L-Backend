@@ -1,10 +1,11 @@
 # Copyright (c) Microsoft Corporation
 
-from .base_network import BaseNetwork
+import torch
+
 # from .generator import *
 # from .encoder import *
 from ...util import util
-import torch
+from .base_network import BaseNetwork
 
 
 def find_network_using_name(target_network_name, filename):

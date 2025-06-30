@@ -1,13 +1,14 @@
 # Copyright (c) Microsoft Corporation
 
 import argparse
-import pickle
-import torch
-import sys
 import os
+import pickle
+import sys
 
-from ..util import util
+import torch
+
 from .. import models
+from ..util import util
 
 
 class BaseOptions:

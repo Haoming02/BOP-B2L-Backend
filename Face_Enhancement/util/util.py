@@ -1,12 +1,13 @@
 # Copyright (c) Microsoft Corporation
 
-from PIL import Image
+import argparse
+import os
+import re
+
 import dill as pickle
 import numpy as np
-import argparse
 import torch
-import re
-import os
+from PIL import Image
 
 
 def save_obj(obj, name):
@@ -127,7 +128,7 @@ def natural_keys(text):
     http://nedbatchelder.com/blog/200712/human_sorting.html
     (See Toothy's implementation in the comments)
     """
-    return [atoi(c) for c in re.split("(\d+)", text)]
+    return [atoi(c) for c in re.split(r"(\d+)", text)]
 
 
 def natural_sort(items):

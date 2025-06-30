@@ -1,11 +1,13 @@
 # Copyright (c) Microsoft Corporation
 
-from .sync_batchnorm import SynchronizedBatchNorm2d
-import torch.nn.utils.spectral_norm as spectral_norm
-import torch.nn.functional as F
-import torch.nn as nn
-import torch
 import re
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.nn.utils.spectral_norm as spectral_norm
+
+from .sync_batchnorm import SynchronizedBatchNorm2d
 
 
 def get_nonspade_norm_layer(opt, norm_type="instance"):

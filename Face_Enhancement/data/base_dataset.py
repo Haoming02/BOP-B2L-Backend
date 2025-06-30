@@ -1,10 +1,11 @@
 # Copyright (c) Microsoft Corporation
 
-import torchvision.transforms as transforms
-import torch.utils.data as data
-from PIL import Image
-import numpy as np
 import random
+
+import numpy as np
+import torch.utils.data as data
+import torchvision.transforms as transforms
+from PIL import Image
 
 
 class BaseDataset(data.Dataset):

@@ -1,16 +1,16 @@
 # Copyright (c) Microsoft Corporation
 
+import torch
+import torch.nn as nn
+from torch.autograd import Variable
+
+from ..util.image_pool import ImagePool
+from . import networks
+from .base_model import BaseModel
 from .NonLocal_feature_mapping_model import (
     Mapping_Model_with_mask,
     Mapping_Model_with_mask_2,
 )
-
-from ..util.image_pool import ImagePool
-from .base_model import BaseModel
-from . import networks
-from torch.autograd import Variable
-import torch.nn as nn
-import torch
 
 
 class Mapping_Model(nn.Module):

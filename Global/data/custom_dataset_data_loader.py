@@ -1,8 +1,8 @@
 # Copyright (c) Microsoft Corporation
 
+import torch.utils.data
 from data import online_dataset_for_old_photos as dts_ray_bigfile
 from data.base_data_loader import BaseDataLoader
-import torch.utils.data
 
 
 def CreateDataset(opt):

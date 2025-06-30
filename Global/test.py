@@ -1,11 +1,12 @@
 # Copyright (c) Microsoft Corporation
 
-import torchvision.transforms as transforms
-from PIL import Image
+import os
+
+import cv2
 import numpy as np
 import torch
-import cv2
-import os
+import torchvision.transforms as transforms
+from PIL import Image
 
 from .models.mapping_model import Pix2PixHDModel_Mapping
 from .options.test_options import TestOptions

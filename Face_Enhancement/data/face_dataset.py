@@ -1,7 +1,8 @@
 # Copyright (c) Microsoft Corporation
 
-from .base_dataset import BaseDataset, get_params, get_transform
 import torch
+
+from .base_dataset import BaseDataset, get_params, get_transform
 
 
 class FaceTestDataset(BaseDataset):

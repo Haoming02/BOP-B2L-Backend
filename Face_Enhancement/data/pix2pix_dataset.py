@@ -1,9 +1,11 @@
 # Copyright (c) Microsoft Corporation
 
-from .base_dataset import BaseDataset, get_params, get_transform
-from ..util import util
-from PIL import Image
 import os
+
+from PIL import Image
+
+from ..util import util
+from .base_dataset import BaseDataset, get_params, get_transform
 
 
 class Pix2pixDataset(BaseDataset):

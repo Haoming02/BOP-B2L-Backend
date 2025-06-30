@@ -1,8 +1,9 @@
 # Copyright (c) Microsoft Corporation
 
-import torch
-import sys
 import os
+import sys
+
+import torch
 
 
 class BaseModel(torch.nn.Module):

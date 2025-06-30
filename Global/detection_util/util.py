@@ -1,16 +1,17 @@
 # Copyright (c) Microsoft Corporation
 
-from easydict import EasyDict as edict
-import torch.backends.cudnn as cudnn
-import torchvision.utils as vutils
+import os
+import sys
+import time
+
 import matplotlib.pyplot as plt
-import torchvision as tv
 import numpy as np
 import torch
-import time
+import torch.backends.cudnn as cudnn
+import torchvision as tv
+import torchvision.utils as vutils
 import yaml
-import sys
-import os
+from easydict import EasyDict as edict
 
 
 ##### option parsing ######

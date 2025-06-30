@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation
 
-from torch.nn import init
 import torch.nn as nn
+from torch.nn import init
 
 
 class BaseNetwork(nn.Module):

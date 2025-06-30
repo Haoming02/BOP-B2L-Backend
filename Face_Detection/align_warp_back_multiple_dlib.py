@@ -1,15 +1,15 @@
 # Copyright (c) Microsoft Corporation
 
-from skimage.transform import SimilarityTransform
-from matplotlib.patches import Rectangle
-from PIL import Image, ImageFilter
-from skimage.transform import warp
-from skimage import img_as_ubyte
+import os
+
+import cv2
+import dlib
 import matplotlib.pyplot as plt
 import numpy as np
-import dlib
-import cv2
-import os
+from matplotlib.patches import Rectangle
+from PIL import Image, ImageFilter
+from skimage import img_as_ubyte
+from skimage.transform import SimilarityTransform, warp
 
 
 def calculate_cdf(histogram):

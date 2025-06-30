@@ -1,11 +1,12 @@
 # Copyright (c) Microsoft Corporation
 
-from .normalization import SPADE
-import torch.nn.utils.spectral_norm as spectral_norm
-import torch.nn.functional as F
-import torch.nn as nn
-import torchvision
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.nn.utils.spectral_norm as spectral_norm
+import torchvision
+
+from .normalization import SPADE
 
 
 # ResNet block that uses SPADE.

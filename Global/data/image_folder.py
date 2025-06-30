@@ -1,8 +1,9 @@
 # Copyright (c) Microsoft Corporation
 
+import os
+
 import torch.utils.data as data
 from PIL import Image
-import os
 
 IMG_EXTENSIONS = [
     ".jpg",

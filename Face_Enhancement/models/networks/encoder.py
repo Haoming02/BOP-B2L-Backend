@@ -1,10 +1,11 @@
 # Copyright (c) Microsoft Corporation
 
-from .normalization import get_nonspade_norm_layer
-from .base_network import BaseNetwork
-import torch.nn.functional as F
-import torch.nn as nn
 import numpy as np
+import torch.nn as nn
+import torch.nn.functional as F
+
+from .base_network import BaseNetwork
+from .normalization import get_nonspade_norm_layer
 
 
 class ConvEncoder(BaseNetwork):

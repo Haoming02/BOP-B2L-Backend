@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation
 
-from .pix2pix_dataset import Pix2pixDataset
 from .image_folder import make_dataset
+from .pix2pix_dataset import Pix2pixDataset
 
 
 class CustomDataset(Pix2pixDataset):

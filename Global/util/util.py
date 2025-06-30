@@ -2,9 +2,11 @@
 # Licensed under the MIT License.
 
 from __future__ import print_function
+
+import os
+
 import numpy as np
 from PIL import Image
-import os
 
 
 # Converts a Tensor into a Numpy array

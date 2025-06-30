@@ -1,7 +1,8 @@
 # Copyright (c) Microsoft Corporation
 
-from .face_dataset import FaceTestDataset
 import torch.utils.data
+
+from .face_dataset import FaceTestDataset
 
 
 def create_dataloader(opt, faces: list):

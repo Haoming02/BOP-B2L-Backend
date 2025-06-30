@@ -1,9 +1,10 @@
 # Copyright (c) Microsoft Corporation
 
-from .sync_batchnorm import DataParallelWithCallback
-from .antialiasing import Downsample
-import torch.nn as nn
 import torch
+import torch.nn as nn
+
+from .antialiasing import Downsample
+from .sync_batchnorm import DataParallelWithCallback
 
 
 class UNet(nn.Module):

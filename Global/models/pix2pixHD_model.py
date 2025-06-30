@@ -1,12 +1,14 @@
 # Copyright (c) Microsoft Corporation
 
-from util.image_pool import ImagePool
-from torch.autograd import Variable
-from .base_model import BaseModel
-from . import networks
+import os
+
 import numpy as np
 import torch
-import os
+from torch.autograd import Variable
+from util.image_pool import ImagePool
+
+from . import networks
+from .base_model import BaseModel
 
 
 class Pix2PixHDModel(BaseModel):

@@ -1,8 +1,9 @@
 # Copyright (c) Microsoft Corporation
 
+import torch
+
 from ..util import util
 from . import networks
-import torch
 
 
 class Pix2PixModel(torch.nn.Module):

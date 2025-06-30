@@ -5,8 +5,8 @@
 # https://github.com/vacancy/Synchronized-BatchNorm-PyTorch
 
 import collections
-import threading
 import queue
+import threading
 
 __all__ = ["FutureResult", "SlavePipe", "SyncMaster"]
 

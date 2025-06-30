@@ -7,12 +7,12 @@
 import collections
 import contextlib
 
-from torch.nn.modules.batchnorm import _BatchNorm
-import torch.nn.functional as F
 import torch
+import torch.nn.functional as F
+from torch.nn.modules.batchnorm import _BatchNorm
 
 try:
-    from torch.nn.parallel._functions import ReduceAddCoalesced, Broadcast
+    from torch.nn.parallel._functions import Broadcast, ReduceAddCoalesced
 except ImportError:
     ReduceAddCoalesced = Broadcast = None
 

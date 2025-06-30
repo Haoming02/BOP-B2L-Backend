@@ -1,14 +1,14 @@
 # Copyright (c) Microsoft Corporation
 
-from torch.nn.utils import spectral_norm
-from torch.autograd import Variable
-from torchvision import models
-
-import torch.nn.functional as F
-import torch.nn as nn
-import numpy as np
 import functools
+
+import numpy as np
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.autograd import Variable
+from torch.nn.utils import spectral_norm
+from torchvision import models
 
 
 ###############################################################################

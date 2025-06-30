@@ -1,7 +1,8 @@
 # Copyright (c) Microsoft Corporation
 
-from . import networks
 import torch.nn as nn
+
+from . import networks
 
 
 class Mapping_Model_with_mask(nn.Module):

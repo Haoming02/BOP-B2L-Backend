@@ -1,15 +1,16 @@
 # Copyright (c) Microsoft Corporation
 
-import torchvision.transforms as transforms
-from PIL import Image, ImageFile
-import torch.nn.functional as F
-import torchvision as tv
-import numpy as np
-import warnings
 import argparse
-import torch
 import gc
 import os
+import warnings
+
+import numpy as np
+import torch
+import torch.nn.functional as F
+import torchvision as tv
+import torchvision.transforms as transforms
+from PIL import Image, ImageFile
 
 from .detection_models import networks
 

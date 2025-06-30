@@ -1,14 +1,14 @@
 # Copyright (c) Microsoft Corporation
 
-from skimage.transform import SimilarityTransform
-from matplotlib.patches import Rectangle
-from skimage.transform import warp
-from skimage import img_as_ubyte
-import matplotlib.pyplot as plt
-from PIL import Image
-import numpy as np
-import dlib
 import os
+
+import dlib
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import Rectangle
+from PIL import Image
+from skimage import img_as_ubyte
+from skimage.transform import SimilarityTransform, warp
 
 
 def _standard_face_pts():
